@@ -1,0 +1,47 @@
+.cat-admin-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .cat-admin-buttons button {
+    background-color: #007bff; /* Bootstrap primary blue color */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .cat-admin-buttons button:hover {
+    background-color: #0056b3; /* Darker shade of blue for hover effect */
+  }
+  
+  .cat-admin-buttons .delete-item-button {
+    background-color: #dc3545; /* Bootstrap danger red color */
+  }
+  
+  .cat-admin-buttons .delete-item-button:hover {
+    background-color: #c82333; /* Darker red for hover effect */
+  }
+  
+  .cat-admin-buttons .add-item-button {
+    background-color: #28a745; /* Bootstrap success green color */
+  }
+  
+  .cat-admin-buttons .add-item-button:hover {
+    background-color: #218838; /* Darker green for hover effect */
+  }
+  
+  .cat-admin-buttons .edit-category-button {
+    background-color: #ffc107; /* Bootstrap warning yellow color */
+    color: #212529; /* Dark color for text contrast */
+  }
+  
+  .cat-admin-buttons .edit-category-button:hover {
+    background-color: #e0a800; /* Darker yellow for hover effect */
+  }
+  

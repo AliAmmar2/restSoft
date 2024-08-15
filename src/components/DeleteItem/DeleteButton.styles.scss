@@ -1,0 +1,20 @@
+.delete-item-button {
+    background-color: #d9534f; 
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin: 5px;
+  }
+  
+  .delete-item-button:hover {
+    background-color: #c9302c; 
+  }
+  
+  .delete-item-button:active {
+    transform: scale(0.9); 
+  }
+  

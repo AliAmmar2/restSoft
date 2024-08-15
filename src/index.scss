@@ -1,0 +1,35 @@
+body {
+  font-family: 'Merriweather',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 20px 40px;
+}
+
+code {
+
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+
+    font-size: 12px;
+}
+
+a{
+  text-decoration: none;
+  color:black;
+}
+
+*{
+  box-sizing: border-box;
+  
+}
+
+button{
+  border:none;
+  background: none;
+  cursor: pointer;
+}
+
+
+
+

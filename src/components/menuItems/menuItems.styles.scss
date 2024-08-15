@@ -1,0 +1,62 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.category-nav {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.category-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  padding: 20px 15px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+}
+
+.category-link:hover {
+  background-color: #ddd;
+}
+
+h1{
+  margin-bottom: 50px;
+}
+
+.category-container {
+  margin-top: 50px;
+}
+
+.item-container {
+  flex-direction: column;
+}
+
+.location{
+  display: flex;
+  justify-content: flex-end;
+}
+.location-logo{
+  width:30px;
+  height: 30px;
+}
+
+
+
+
+@media (max-width: 576px){
+
+  .item-container {
+    flex-direction: column;
+  }
+
+  .menu-item-content {
+    align-items:flex-start;
+  }
+}
+
+  
+
+
+
