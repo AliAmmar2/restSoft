@@ -36,9 +36,13 @@
   .burger-icon {
     display: none;
     cursor: pointer;
+    z-index: 1001;
 
     @media (max-width: 768px) {
       display: block;
+      position: absolute; 
+      top: 20px;
+      right: 20px;
     }
   }
 

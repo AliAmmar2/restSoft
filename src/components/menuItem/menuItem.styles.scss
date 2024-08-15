@@ -3,7 +3,14 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
-  
+
+  // .menu-item-content {
+  //   display: flex;
+  //   align-items: center;
+  //   width: 100%;  /* Ensure the content takes the full available width */
+  //   border-bottom: 1px solid #ccc;
+  //   padding: 0 10px;  /* Add padding to create space within the content */
+  // }
 
   .menu-item-content {
     display: flex;
@@ -16,7 +23,7 @@
 
   .item-img {
     margin-right: 20px; 
-    width: 50px; 
+    width: 50px;
     height: 50px;
     object-fit: contain;
     border-radius: 5px;
@@ -26,12 +33,17 @@
     flex: 1;
     font-size: 16px;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 20px;  /* Add margin for spacing */
   }
 
   .item-price {
     font-size: 1rem;
     font-weight: 550;
     text-align: right;
+    white-space: nowrap;
     margin-left: auto;
   }
 
@@ -43,35 +55,63 @@
     border: none;
     cursor: pointer;
     border-radius: 3px;
-    
+
     &:hover {
       background-color: #c0392b;
     }
   }
-}
 
-
-  @media (max-width: 1200px) {
-    .menu-item {
-      width: 100%;
-    }
-  }
-  
-  @media (max-width: 992px) {
-    .menu-item {
-      width: 100%;
-    }
-  }
-  
   @media (max-width: 768px) {
-    .menu-item {
-      width: 100%;
+    .menu-item-content {
+      padding: 0 8px; 
+    }
+
+    .item-img {
+      margin-right: 15px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .item-name {
+      font-size: 14px;
+      margin-right: 15px;
+    }
+
+    .item-price {
+      font-size: 14px;
+    }
+
+    .delete-item-button {
+      margin-left: 15px;
+      padding: 5px 8px;
+      font-size: 12px;
     }
   }
-  
+
   @media (max-width: 576px) {
-    .menu-item {
-      width: 100%;
-      padding: 10px;
+    .menu-item-content {
+      padding: 0; 
     }
+
+    .item-img {
+      margin-right: 0px;
+      width: 35px;
+      height: 35px;
+    }
+
+    .item-name {
+      font-size: 13px;
+      margin-right: 0;
+    }
+
+    .item-price {
+      font-size: 13px;
+    }
+
+    .delete-item-button {
+      margin-left: 10px;
+      padding: 4px 6px;
+      font-size: 11px;
+    }
+  }
 }

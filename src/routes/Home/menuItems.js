@@ -8,16 +8,16 @@ const RestData = [
             'category': 'Burgers',
             'items': [
                 {
-                    id:1, name: 'HamBurger', imageUrl: 'url.jpg', price: 6
+                    id:1, name: 'HamBurger', imageUrl: 'https://i.ibb.co/NCzkNC1/burger.webp', price: 6
                 },
                 {
-                    id:2, name: 'CheeseBurger', imageUrl: 'url2.jpg', price: 5.5
+                    id:2, name: 'CheeseBurger', imageUrl: 'https://i.ibb.co/GsVvGgy/ai-generative-cheeseburger-free-png.png', price: 5.5
                 },
                 {
-                    id:3, name: 'Bacon Burger', imageUrl: 'url2.jpg', price: 7
+                    id:3, name: 'Bacon Burger', imageUrl: 'https://i.ibb.co/G2D3MTK/ai-generated-juicy-bacon-burger-on-transparent-background-png.webp', price: 7
                 },
                 {
-                    id:4, name: 'Bacon CheeseBurger', imageUrl: 'url2.jpg', price: 6.5
+                    id:4, name: 'Chicken Burger', imageUrl: 'https://i.ibb.co/M14SCjf/3243c6eb4ef984c3df69a597efd1d47e.jpg', price: 6.5
                 },
             ]
 
