@@ -36,7 +36,7 @@ const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
       <div className="category-nav">
         <CategoryBar menu={menu} />
       </div>
-      <div className='menu-container'>
+      <div>
         {menu.map((category, categoryIndex) => (
           <CategoryContainer
             key={categoryIndex}

@@ -37,11 +37,11 @@ const MenuItem = ({
         </div>
       ) : (
         <div className="menu-item-content">
-          <button className="menu-item-content" onClick={addProductToCart}>
+          <div className="menu-item-content">
           <img className='item-img' src={item.imageUrl} alt=''/>
           <h4 className="item-name">{item.name}</h4>
           <h4 className="item-price">${item.price}</h4>
-          </button>
+          </div>
           <DeleteButton 
             admin={admin}
             handleDeleteItem={handleDeleteItem}

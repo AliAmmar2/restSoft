@@ -3,12 +3,13 @@ const RestData = [
     'name': 'AbuSje2Restaurant',
     'id': "abusje2restaurant",
     'IconUrl': 'https://i.ibb.co/C6q5y3g/granderost.webp',
+    'location': '',
     'menu': [
         {
             'category': 'Burgers',
             'items': [
                 {
-                    id:1, name: 'HamBurger', imageUrl: 'https://i.ibb.co/NCzkNC1/burger.webp', price: 6
+                    id:1, name: 'HamBurger', imageUrl: '', price: 6
                 },
                 {
                     id:2, name: 'CheeseBurger', imageUrl: 'https://i.ibb.co/GsVvGgy/ai-generative-cheeseburger-free-png.png', price: 5.5
@@ -92,6 +93,7 @@ const RestData = [
         'name': 'Restaurant2',
         'id': "restaurant2",
         'IconUrl': 'https://i.ibb.co/n7TM6CX/bermadacafe.png',
+        'location': '',
         'menu': [
         {
             'category': 'Burgers',

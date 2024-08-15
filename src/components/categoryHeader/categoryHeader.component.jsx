@@ -2,7 +2,7 @@ import React from 'react';
 import CatAdmin from '../catAdmin/catAdmin.component';
 
 const CategoryHeader = ({ category, categoryIndex, admin, editingCategory, handleSave, handleEdit, handleAddItem, handleDeleteCategory }) => (
-  <div className="category-header">
+  <div >
     <h2>{category.category}</h2>
     <CatAdmin
       admin={admin}

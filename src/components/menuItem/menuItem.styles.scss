@@ -21,6 +21,14 @@
     border-bottom: 1px solid #ccc;
   }
 
+  .button-item-content{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    justify-content: space-between;
+  }
+
   .item-img {
     margin-right: 20px; 
     width: 50px;
@@ -62,8 +70,17 @@
   }
 
   @media (max-width: 768px) {
+    .menu-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      
+
     .menu-item-content {
       padding: 0 8px; 
+      max-width: 100vw;
+      
     }
 
     .item-img {
@@ -91,10 +108,11 @@
   @media (max-width: 576px) {
     .menu-item-content {
       padding: 0; 
+      width: 300px;
     }
 
     .item-img {
-      margin-right: 0px;
+      margin-right: 10px;
       width: 35px;
       height: 35px;
     }
@@ -113,5 +131,6 @@
       padding: 4px 6px;
       font-size: 11px;
     }
+  }
   }
 }

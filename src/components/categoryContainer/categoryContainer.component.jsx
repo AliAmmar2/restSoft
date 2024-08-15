@@ -3,7 +3,7 @@ import ItemContainer from '../itemContainer/itemContainer.component';
 import CategoryHeader from '../categoryHeader/categoryHeader.component';
 
 const CategoryContainer = ({ category, categoryIndex, admin, editingCategory, editedItems, handleItemChange, handleDeleteItem, id, showAddForm, handleAddItemSubmit, handleNewItemChange, newItem, handleSave, handleEdit, handleAddItem, handleDeleteCategory }) => (
-  <div id={category.category} key={categoryIndex} className='category-container'>
+  <div id={category.category} key={categoryIndex}>
     <CategoryHeader
       category={category}
       categoryIndex={categoryIndex}

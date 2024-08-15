@@ -3,7 +3,7 @@ import MenuItem from '../menuItem/menuItem.component';
 import AddItemForm from '../addItemForm/addItemForm.component';
 
 const ItemContainer = ({ category, categoryIndex, admin, editingCategory, editedItems, handleItemChange, handleDeleteItem, id, showAddForm, handleAddItemSubmit, handleNewItemChange, newItem }) => (
-  <div className='item-container'>
+  <div>
     {category.items.map((item, itemIndex) => (
       <MenuItem
         key={itemIndex}
