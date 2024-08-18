@@ -25,6 +25,7 @@ const Footer = () => {
                   <FaEnvelope/>
                 </Mailto>
                 <a href={`tel:${phoneNumber}`} className="icon"><FaPhone/></a>
+                <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="icon"><FaWhatsapp/></a>
               </div>
             </div>
             <div className="footer-logo">
@@ -33,7 +34,6 @@ const Footer = () => {
             <div className="footer-section">
               <h4>Follow Us</h4>
               <div className="icons">
-                <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="icon"><FaWhatsapp/></a>
                 <a href={twitter} target="_blank" rel="noopener noreferrer" className="icon"><FaTwitter /></a>
                 <a href={facebook} target="_blank" rel="noopener noreferrer" className="icon"><FaFacebook /></a>
                 <a href={instagram} target="_blank" rel="noopener noreferrer"  className="icon"><FaInstagram /></a>

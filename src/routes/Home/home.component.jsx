@@ -1,10 +1,11 @@
-import { useEffect } from "react";
-import { addCollectionAndDocuments } from "../../utils/firebase/firebase.utils";
+import { useEffect, useState } from "react";
+import { addCollectionAndDocuments, getAllRestaurants } from "../../utils/firebase/firebase.utils";
 import RestData from "./menuItems";
 import { FaUtensils, FaEdit, FaSyncAlt } from 'react-icons/fa';
 import {HomeContainer,HeroSection,HeroContent,FeaturesSection,Feature,PortfolioSection,HowItWorksSection,Steps,Step,
-  PortfolioGallery,TestimonialsSection,Testimonial,
+  PortfolioGallery,TestimonialsSection,Testimonial,StyledLink
 } from'./home.styles'
+import { Link } from "react-router-dom";
 
 const Home = () => {
 
@@ -19,6 +20,19 @@ const Home = () => {
     //     };
     //     fetchUser();
     //   });
+
+    const [firstRes, setFirstRes] = useState([]);
+
+    useEffect(() => {
+      const fetchFirstThree = async() => {
+        const restaurants = await getAllRestaurants();
+        const filteredRestaurants = restaurants.filter((_,idx) => idx<3);
+        setFirstRes(filteredRestaurants);
+        
+      }
+      
+      fetchFirstThree()
+    },[])
    
        
         return (
@@ -81,10 +95,16 @@ const Home = () => {
       <PortfolioSection>
         <h2>Example Menus</h2>
         <PortfolioGallery>
-          <img src="https://via.placeholder.com/300x200" alt="Example Menu 1" />
-          <img src="https://via.placeholder.com/300x200" alt="Example Menu 2" />
-          <img src="https://via.placeholder.com/300x200" alt="Example Menu 3" />
+        {firstRes.map((restaurant, restIdx) => (
+                    <div key={restIdx}>
+                        <Link to={`menus/${restaurant.id}`} >
+                            <img className='rest-logo' src={restaurant.url} alt={restaurant.name}/>
+                        </Link>
+                        <h3>{restaurant.name}</h3>
+                    </div>
+                ))}
         </PortfolioGallery>
+        <StyledLink to="menus">Show more</StyledLink>
       </PortfolioSection>
     </HomeContainer>
       );

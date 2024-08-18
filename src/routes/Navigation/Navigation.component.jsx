@@ -2,28 +2,44 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import './navigation.styles.scss';
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { getUserDocumentByUID, signOutUser } from '../../utils/firebase/firebase.utils';
+import { createUserDocumentFromAuth, getUserDocumentByUID, signOutUser } from '../../utils/firebase/firebase.utils';
+import { onSnapshot, doc } from 'firebase/firestore';
+import { db } from '../../utils/firebase/firebase.utils';
 import { setCurrentUser } from '../../store/user/user.reducer';
 import { useEffect, useState, useRef } from "react";
 import Mailto from "../../components/Mailto/mailto.component";
 import { FaBars, FaTimes } from 'react-icons/fa';
+import Logo from '../../assets/tempLogo.png';
 
 const Navigation = () => {
   const currentUser = useSelector(selectCurrentUser);
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState('undefined');
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const menuRef = useRef(null);
 
   useEffect(() => {
-    const fetchUserName = async() => {
-      if(currentUser && currentUser !== 'undefined' ){
-        const { Username } = await getUserDocumentByUID(currentUser.uid);
-        setUsername(Username);
-      }
+    let unsubscribe;
+    if (currentUser) {
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          setUsername(userData.Username || null);
+        } else {
+          console.log("Working on it!");
+          setUsername(null);
+        }
+      }, (error) => {
+        console.error("Error fetching user document:", error);
+      });
     }
-
-    fetchUserName();
+  
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [currentUser]);
 
   const handleSignOut = async () => {
@@ -31,7 +47,7 @@ const Navigation = () => {
       await signOutUser();
       dispatch(setCurrentUser(null));
       setUsername(null);
-      setMenuOpen(false); // Close menu on sign out
+      setMenuOpen(false); 
     } catch (error) {
       console.error(`Sign-out failed: ${error.message}`);
       alert('Sign out failed!');
@@ -65,7 +81,9 @@ const Navigation = () => {
   return (
     <>
       <div className="navigation" ref={menuRef}>
-        <Link className="logo-container" to='/'>Logo</Link>
+      <Link to='/'>
+          <img src={Logo} alt="Logo"className="logo-container" />
+        </Link>
         <div className={`nav-links-container ${menuOpen ? 'open' : ''}`}>
           <Mailto email='ammarsoltan51@gmail.com' subject='make website' body='Please make website free.' className="nav-link">
             <span  onClick={closeMenu}>Contact Us</span>

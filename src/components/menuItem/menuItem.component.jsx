@@ -37,7 +37,7 @@ const MenuItem = ({
         </div>
       ) : (
         <div className="menu-item-content">
-          <div className="menu-item-content">
+          <div className="menu-item-content" onClick={addProductToCart}>
           <img className='item-img' src={item.imageUrl} alt=''/>
           <h4 className="item-name">{item.name}</h4>
           <h4 className="item-price">${item.price}</h4>

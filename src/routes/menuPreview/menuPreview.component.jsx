@@ -6,7 +6,7 @@ import { selectRestaurants } from "../../store/menu/menu.selector";
 
 const MenuPreview = () => {
     const [searchField, setSearchField] = useState('');
-    const restaurants = useSelector(selectRestaurants);
+    const restaurants = useSelector(selectRestaurants); 
 
     const filteredRestaurants = restaurants.filter((restaurant) =>
         restaurant.name.toLowerCase().includes(searchField.toLowerCase())
@@ -19,8 +19,7 @@ const MenuPreview = () => {
     return(
         <div className="menu-preview-container">
             <h1>All Menus</h1>
-            
-            {/* Search box visible only on smaller screens */}
+
             <input
                 type="search"
                 placeholder="Search restaurants..."

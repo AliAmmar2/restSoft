@@ -1,11 +1,14 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import backgroundImage from '../../assets/background.jpg';
 
 export const HomeContainer = styled.div`
   font-family: Arial, sans-serif;
 `;
 
 export const HeroSection = styled.section`
-  background: url('https://via.placeholder.com/1200x400') no-repeat center center/cover;
+  position: relative;
+  background: url(${backgroundImage}) no-repeat center center/cover, #aaada7;
   height: 400px;
   display: flex;
   align-items: center;
@@ -13,6 +16,23 @@ export const HeroSection = styled.section`
   color: white;
   text-align: center;
   padding: 0 20px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 
   @media (max-width: 768px) {
     height: 300px;
@@ -27,6 +47,7 @@ export const HeroContent = styled.div`
   h1 {
     font-size: 48px;
     margin-bottom: 10px;
+    color:white;
 
     @media (max-width: 768px) {
       font-size: 36px;
@@ -243,5 +264,20 @@ export const PortfolioGallery = styled.div`
       width: 100%;
       height: auto;
     }
+  }
+`;
+
+export const StyledLink = styled(Link)`
+  color: blue; 
+  text-decoration: none; 
+  font-weight: bold;
+
+  &:hover {
+    color: darkblue; 
+  }
+
+  &:before {
+    content: '-›'; 
+    margin-right: 5px; 
   }
 `;

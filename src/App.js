@@ -16,12 +16,13 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const showNavigation = !location.pathname.toLowerCase().startsWith('/menus');
+  const showFooter = !location.pathname.toLowerCase().startsWith('/menus/');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
       if (user) {
-        await createAuthWithEmailAndPassword(user);
-
+        const userdata = await createAuthWithEmailAndPassword(user);
+        console.log(userdata);
         const userData = {
           uid: user.uid,
           email: user.email,
@@ -46,7 +47,7 @@ function App() {
         <Route path='Menus/*' element={<Menus />} />
         <Route path='checkout' element={<Checkout/>} />
       </Routes>
-      <Footer/>
+      {showFooter && <Footer />}
     </>
   );
 }

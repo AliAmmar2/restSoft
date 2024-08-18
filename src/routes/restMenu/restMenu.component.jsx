@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectRestaurants } from '../../store/menu/menu.selector';
 import Admin from '../Admin/admin.component';
 import Spinner from '../../components/spinner/spinner.component';
+import RestFooter from '../../components/restFooter/restFooter.component';
 
 const RestMenu = ({ isAdmin }) => {
   const { restName } = useParams();
@@ -45,6 +46,7 @@ const RestMenu = ({ isAdmin }) => {
           <Route path="admin" element={<Admin />} />
         </Routes>
       )} 
+      {restName && <RestFooter restName={restName}/>}
     </div>
   );
 }

@@ -25,7 +25,6 @@ const AddItemForm = ({ showAddForm, editingCategory, category, handleAddItemSubm
       <input
         type="file"
         onChange={(e) => handleNewItemChange('imageFile', e.target.files[0])}
-        required
   />
       <button type="submit">Add Item</button>
     </form>

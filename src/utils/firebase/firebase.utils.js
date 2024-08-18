@@ -67,7 +67,9 @@ export const createUserDocumentFromAuth = async (
     try {
       const userDocRef = doc(db, 'users', uid);
       const userSnapshot = await getDoc(userDocRef);
-      return userSnapshot.data();
+      if(userSnapshot) {
+        return userSnapshot.data();
+      }      
      
     } catch (error) {
       console.error("Error getting document:", error);
@@ -81,13 +83,32 @@ export const createUserDocumentFromAuth = async (
     const batch = writeBatch(db);
 
     objectsToAdd.forEach((object) => {
-        const docRef = doc(collectionRef,object.name.toLowerCase()); 
+        const docRef = doc(collectionRef,object.id.toLowerCase()); 
         batch.set(docRef, object);
     });
 
     await batch.commit();
 };
+export const getRestaurantsInfo = async (username) => {
+  try {
+    const docRef = doc(db, 'restaurants', username);
+    const docSnap = await getDoc(docRef);
 
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      const info = {
+        phone: data.phone,
+        location: data.location,
+      }
+      return info;
+    } else {
+      console.log('No such document!');
+      return ;
+    }
+  } catch (error) {
+    console.error('Error getting document:', error);
+  }
+};
 
 export const getRestaurantsByUsername = async (username) => {
     try {

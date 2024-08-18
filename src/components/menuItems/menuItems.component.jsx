@@ -66,10 +66,7 @@ const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
           handleAddCategory={handleAddCategory}
           handleFieldChange={handleFieldChange}
         />
-        <div className='location'>
-        <img className='location-logo' src={locationLogo} alt='location logo'/>
-        <p >{location} </p>
-        </div>
+        
         {count && !isAdmin ? <button onClick={() => navigate('/checkout')}>Go to Checkout</button> : null}
       </div>
     </>
