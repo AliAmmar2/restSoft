@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { addCollectionAndDocuments, getAllRestaurants } from "../../utils/firebase/firebase.utils";
 import RestData from "./menuItems";
-import { FaUtensils, FaEdit, FaSyncAlt } from 'react-icons/fa';
+import { FaUtensils, FaEdit, FaSyncAlt, FaArrowRight }  from 'react-icons/fa';
 import {HomeContainer,HeroSection,HeroContent,FeaturesSection,Feature,PortfolioSection,HowItWorksSection,Steps,Step,
   PortfolioGallery,TestimonialsSection,Testimonial,StyledLink
 } from'./home.styles'

@@ -276,8 +276,8 @@ export const StyledLink = styled(Link)`
     color: darkblue; 
   }
 
-  &:before {
+  &:after {
     content: '-›'; 
-    margin-right: 5px; 
+    margin-left: 5px; 
   }
 `;

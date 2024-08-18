@@ -2,7 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import './navigation.styles.scss';
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { createUserDocumentFromAuth, getUserDocumentByUID, signOutUser } from '../../utils/firebase/firebase.utils';
+import { signOutUser } from '../../utils/firebase/firebase.utils';
 import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '../../utils/firebase/firebase.utils';
 import { setCurrentUser } from '../../store/user/user.reducer';

@@ -6,9 +6,8 @@ import { getUserDocumentByUID } from '../../utils/firebase/firebase.utils';
 import CategoryBar from '../categoryBar/categoryBar.component';
 import AddCatAdmin from '../addCatAdmin/addCatAdmin.component';
 import useMenu from '../../hooks/useMenu';
-import locationLogo from '../../assets/location.png'
 import CategoryContainer from '../categoryContainer/categoryContainer.component';
-import { selectCartCount, selectCartItems } from '../../store/cart/cart.selector';
+import { selectCartCount, } from '../../store/cart/cart.selector';
 import { useNavigate } from 'react-router-dom';
 
 const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
