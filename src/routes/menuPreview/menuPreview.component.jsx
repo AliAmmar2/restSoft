@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectRestaurants } from "../../store/menu/menu.selector";
 
+
 const MenuPreview = () => {
     const [searchField, setSearchField] = useState('');
     const restaurants = useSelector(selectRestaurants); 

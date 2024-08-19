@@ -1,4 +1,4 @@
-import { Route, Routes,useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from './routes/Home/home.component';
 import Navigation from './routes/Navigation/Navigation.component';
 import Login from './routes/Login/Login.component';
@@ -10,12 +10,13 @@ import { setCurrentUser } from './store/user/user.reducer';
 import Menus from './routes/Menus/menus.component';
 import Footer from './components/footer/footer.component';
 import Checkout from './routes/checkout/checkout.component';
+import './App.styles.scss'; 
 
 function App() {
-
   const dispatch = useDispatch();
   const location = useLocation();
-  const showNavigation = !location.pathname.toLowerCase().startsWith('/menus');
+  const showNavigation = !location.pathname.toLowerCase().startsWith('/menus') &&
+  !location.pathname.toLowerCase().startsWith('/checkout');
   const showFooter = !location.pathname.toLowerCase().startsWith('/menus/');
 
   useEffect(() => {
@@ -27,7 +28,6 @@ function App() {
           uid: user.uid,
           email: user.email,
         };
-        
         dispatch(setCurrentUser(userData));
       }
     });
@@ -38,21 +38,20 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="app-container"> {/* New container class */}
       {showNavigation && <Navigation />}
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='Login' element={<Login />} />
-        <Route path='SignUp' element={<SignUp />} />
-        <Route path='Menus/*' element={<Menus />} />
-        <Route path='checkout' element={<Checkout/>} />
-      </Routes>
+      <div className="content"> {/* Content area */}
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='Login' element={<Login />} />
+          <Route path='SignUp' element={<SignUp />} />
+          <Route path='Menus/*' element={<Menus />} />
+          <Route path='checkout' element={<Checkout />} />
+        </Routes>
+      </div>
       {showFooter && <Footer />}
-    </>
+    </div>
   );
 }
 
-
-
 export default App;
-   

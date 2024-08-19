@@ -11,6 +11,7 @@
     justify-content: center;
     gap: 20px;
     margin-bottom: 20px; 
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
 }
 
 .info-item {
@@ -36,4 +37,34 @@
     font-size: 16px;
     color: #777;
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .info-section {
+        gap: 10px; 
+    }
+
+    .divider {
+        width: 70%; 
+    }
+
+    .copyright-section {
+        font-size: 14px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .info-section {
+        flex-direction: column; 
+        gap: 15px; 
+        font-size: 13px;
+    }
+
+    .divider {
+        width: 80%;
+    }
+
+    .copyright-section {
+        font-size: 12px; 
+    }
 }

@@ -58,7 +58,7 @@ const Login = () => {
               required
             />
             <div className="Login">
-              <Link className="login-link" to="/forgot-password">Forgot Username / Password?</Link>
+              <Link className="login-link" to="/forgot-password">Forgot your password?</Link>
               <button type="submit" className="login-button">
                 LOGIN
               </button>

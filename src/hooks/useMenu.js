@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { addCategory, addItemToCategory, deleteCategory, deleteItem, updateItem } from '../utils/firebase/firebase.utils';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const useMenu = (initialMenu, id) => {
   const [menu, setMenu] = useState(initialMenu);
@@ -118,35 +120,60 @@ const useMenu = (initialMenu, id) => {
     }));
   };
 
-  const handleDeleteItem = async (id, categoryIndex, itemIndex) => {
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      try {
-        await deleteItem(id, categoryIndex, itemIndex);
-
-        setMenu(prevMenu => prevMenu.map((category, cIndex) =>
-          cIndex === categoryIndex
-            ? { ...category, items: category.items.filter((_, iIndex) => iIndex !== itemIndex) }
-            : category
-        ));
-      } catch (error) {
-        console.error('Error deleting item:', error);
-      }
-    }
+  const handleDeleteItem = (id, categoryIndex, itemIndex) => {
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete this item?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => {
+            try {
+              await deleteItem(id, categoryIndex, itemIndex);
+              setMenu(prevMenu => prevMenu.map((category, cIndex) =>
+                cIndex === categoryIndex
+                  ? { ...category, items: category.items.filter((_, iIndex) => iIndex !== itemIndex) }
+                  : category
+              ));
+            } catch (error) {
+              console.error('Error deleting item:', error);
+            }
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
+    });
   };
 
-  const handleDeleteCategory = async (categoryIndex) => {
-    if (window.confirm('Are you sure you want to delete this entire category? This action cannot be undone.')) {
-      try {
-        const updatedMenu = await deleteCategory(id, categoryIndex);
-        setMenu(updatedMenu);
-      } catch (error) {
-        console.error('Error deleting category:', error);
-      }
-    }
+  const handleDeleteCategory = (categoryIndex) => {
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete this entire category? This action cannot be undone.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async () => {
+            try {
+              const updatedMenu = await deleteCategory(id,categoryIndex);
+              setMenu(updatedMenu);
+            } catch (error) {
+              console.error('Error deleting category:', error);
+            }
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => {}
+        }
+      ]
+    });
   };
 
   const handleClickCategory = () => {
-    setShowCategoryForm(true);
+    setShowCategoryForm(!showCategoryForm);
   };
 
   const handleFieldChange = (e) => {

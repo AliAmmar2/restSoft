@@ -16,11 +16,11 @@ const RestFooter = ({restName}) => {
         <footer className="rest-footer">
             <div className="info-section">
                 <div className="info-item">
-                    <FaMapMarkerAlt className="icon" /> {/* Location icon */}
+                    <FaMapMarkerAlt className="icon" /> 
                     <span>{infos.location}</span>
                 </div>
                 <div className="info-item">
-                    <FaPhoneAlt className="icon" /> {/* Phone icon */}
+                    <FaPhoneAlt className="icon" />
                     <span>{infos.phone}</span>
                 </div>
             </div>
