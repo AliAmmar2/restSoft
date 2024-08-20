@@ -6,14 +6,7 @@ import {
   removeItemFromCart,
 } from '../../store/cart/cart.reducer';
 
-import {
-  CheckoutItemContainer,
-  BaseSpan,
-  Quantity,
-  Arrow,
-  Value,
-  RemoveButton,
-} from './checkoutItem.styles';
+import './checkoutItem.styles.scss';
 
 const CheckoutItem = ({ cartItem }) => {
   const { name, price, quantity } = cartItem;
@@ -24,16 +17,21 @@ const CheckoutItem = ({ cartItem }) => {
   const removeItemHandler = () => dispatch(removeItemFromCart(cartItem));
 
   return (
-    <CheckoutItemContainer>
-      <BaseSpan> {name} </BaseSpan>
-      <Quantity>
-        <Arrow onClick={removeItemHandler}>&#10094;</Arrow>
-        <Value>{quantity}</Value>
-        <Arrow onClick={addItemHandler}>&#10095;</Arrow>
-      </Quantity>
-      <BaseSpan> {price}</BaseSpan>
-      <RemoveButton onClick={clearItemHandler}>&#10005;</RemoveButton>
-    </CheckoutItemContainer>
+    <div className='checkout-item-container'>
+    <div className='item-details'>
+        <span className='item-name'>{name}</span>
+    </div>
+    <div className='quantity-price'>
+        <div className='quantity'>
+            <div className='arrow' onClick={removeItemHandler}>➖</div>
+            <span className='value'>{quantity}</span>
+            <div className='arrow' onClick={addItemHandler}>➕</div>
+        </div>
+        <span className='price'>{price}$</span>
+        <div className='edit-icon' onClick={clearItemHandler}>x</div>
+    </div>
+</div>
+
   );
 };
 

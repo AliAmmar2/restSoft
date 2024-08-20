@@ -7,16 +7,17 @@ import CategoryBar from '../categoryBar/categoryBar.component';
 import AddCatAdmin from '../addCatAdmin/addCatAdmin.component';
 import useMenu from '../../hooks/useMenu';
 import CategoryContainer from '../categoryContainer/categoryContainer.component';
-import { selectCartCount, } from '../../store/cart/cart.selector';
+import { selectCartCount, selectCartItems, } from '../../store/cart/cart.selector';
 import { useNavigate } from 'react-router-dom';
+import CheckoutItem from '../checkoutItem/checkoutItem.component';
+import Checkout from '../../routes/checkout/checkout.component';
 
 const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
   const currentUser = useSelector(selectCurrentUser);
   const [restName, setRestName] = useState(null);
   const { menu, handleAddItem, handleNewItemChange, handleAddItemSubmit, handleEdit, handleSave, handleItemChange, handleDeleteItem, handleDeleteCategory, handleClickCategory, handleFieldChange, handleAddCategory, showAddForm, editingCategory, editedItems, newItem, showCategoryForm, categoryName } = useMenu(initialMenu, id);
 
-  const navigate = useNavigate();
-  const count = useSelector(selectCartCount);
+  const cartItems = useSelector(selectCartItems);
   useEffect(() => {
     const fetchUser = async () => {
       if (currentUser) {
@@ -65,8 +66,8 @@ const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
           handleAddCategory={handleAddCategory}
           handleFieldChange={handleFieldChange}
         />
-        
-        {count && !isAdmin ? <button onClick={() => navigate('/checkout')}>Go to Checkout</button> : null}
+        {cartItems.length ? <Checkout/> : null}
+       
       </div>
     </>
   );

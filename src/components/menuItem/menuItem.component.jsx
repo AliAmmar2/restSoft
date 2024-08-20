@@ -16,7 +16,7 @@ const MenuItem = ({
   admin,
   id,
 }) => {
-  const [clicked, setClicked] = useState(false)
+  const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
   
   const addProductToCart = () => {

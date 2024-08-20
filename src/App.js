@@ -15,8 +15,7 @@ import './App.styles.scss';
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
-  const showNavigation = !location.pathname.toLowerCase().startsWith('/menus') &&
-  !location.pathname.toLowerCase().startsWith('/checkout');
+  const showNavigation = !location.pathname.toLowerCase().startsWith('/menus');
   const showFooter = !location.pathname.toLowerCase().startsWith('/menus/');
 
   useEffect(() => {
