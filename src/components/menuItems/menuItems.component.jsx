@@ -66,7 +66,7 @@ const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
           handleAddCategory={handleAddCategory}
           handleFieldChange={handleFieldChange}
         />
-        {cartItems.length ? <Checkout/> : null}
+        {cartItems.length && !admin ? <Checkout/> : null}
        
       </div>
     </>

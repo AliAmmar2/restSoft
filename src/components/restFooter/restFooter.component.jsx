@@ -5,13 +5,18 @@ import './restFooter.styles.scss'
 
 const RestFooter = ({restName}) => {
     const [infos,setInfo] = useState({});
-    useEffect(() =>{
-        const fetchInfo = async() => {
-            const info = await getRestaurantsInfo(restName);
-            setInfo(info);
-        }
+    useEffect(() => {
+        const fetchInfo = async () => {
+            if (!infos[restName]) {
+                const info = await getRestaurantsInfo(restName);
+                setInfo(prev => ({ ...prev, [restName]: info }));
+                setInfo(info);
+            } else {
+                setInfo(infos[restName]);
+            }
+        };
         fetchInfo();
-    },[restName, infos])
+    }, []);
     return (
         <footer className="rest-footer">
             <div className="info-section">

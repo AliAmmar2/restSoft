@@ -20,12 +20,14 @@ const MenuItem = ({
   const dispatch = useDispatch();
   
   const addProductToCart = () => {
+    if(!admin){
     setClicked(!clicked);
     if(!clicked){
     dispatch(addItemToCart(item));
     }else{
       dispatch(removeItemFromCart(item));
     }
+  }
     
   };
   return (
@@ -44,8 +46,9 @@ const MenuItem = ({
           />
         </div>
       ) : (
+        
         <div className="menu-content-container">
-          <div className={`${clicked ? 'clicked-item' : ''}  menu-item-content`} onClick={addProductToCart}>
+          <div className={`${clicked && !admin ? 'clicked-item' : ''}  menu-item-content`} onClick={addProductToCart}>
           <img className='item-img' src={item.imageUrl} alt=''/>
           <h4 className="item-name">{item.name}</h4>
           <h4 className="item-price">${item.price}</h4>

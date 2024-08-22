@@ -22,3 +22,30 @@
   font-size: 17px;
   text-align: right;
 }
+
+@media (max-width:480px){
+  .checkout-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 15px;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .checkout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  
+  .total {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: right;
+  }
+}

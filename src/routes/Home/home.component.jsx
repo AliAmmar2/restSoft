@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { addCollectionAndDocuments, getAllRestaurants } from "../../utils/firebase/firebase.utils";
 import RestData from "./menuItems";
 import { FaUtensils, FaEdit, FaSyncAlt, FaArrowRight }  from 'react-icons/fa';
@@ -6,6 +6,9 @@ import {HomeContainer,HeroSection,HeroContent,FeaturesSection,Feature,PortfolioS
   PortfolioGallery,TestimonialsSection,Testimonial,StyledLink
 } from'./home.styles'
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setRestaurants } from "../../store/menu/menu.reducer";
+import { selectRestaurants } from "../../store/menu/menu.selector";
 
 const Home = () => {
 
@@ -22,17 +25,26 @@ const Home = () => {
     //   });
 
     const [firstRes, setFirstRes] = useState([]);
+    const allRestaurants = useSelector(selectRestaurants);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-      const fetchFirstThree = async() => {
-        const restaurants = await getAllRestaurants();
-        const filteredRestaurants = restaurants.filter((_,idx) => idx<3);
+        const fetchAndDispatchRestaurants = async () => {
+            if (!allRestaurants || allRestaurants.length === 0) {
+                const restaurants = await getAllRestaurants();
+                dispatch(setRestaurants(restaurants));
+            }
+        };
+        fetchAndDispatchRestaurants();
+    }, [allRestaurants]);
+
+    const filteredRestaurants = useMemo(() => {
+        return allRestaurants ? allRestaurants.slice(0, 3) : [];
+    }, [allRestaurants]);
+
+    useEffect(() => {
         setFirstRes(filteredRestaurants);
-        
-      }
-      
-      fetchFirstThree()
-    },[])
+    }, [filteredRestaurants]);
    
        
         return (

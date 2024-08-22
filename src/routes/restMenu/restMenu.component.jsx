@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { getRestaurantsByUsername } from '../../utils/firebase/firebase.utils';
 import MenuItems from '../../components/menuItems/menuItems.component';
@@ -12,21 +12,21 @@ const RestMenu = ({ isAdmin }) => {
   const { restName } = useParams();
   const [selectedMenu, setSelectedMenu] = useState(null);
   const restaurants = useSelector(selectRestaurants);
-  const res = restaurants.find(r => r.id === restName);
+  const res = useMemo(() => restaurants.find(r => r.id === restName), [restaurants, restName]);
+
 
   const fetchMenu = useCallback(async () => {
-    if (res) {
-      const menu = await getRestaurantsByUsername(restName.toLowerCase());
-      setSelectedMenu(menu);
-      console.log(res)
+    if (res && !selectedMenu) { 
+        const menu = await getRestaurantsByUsername(restName.toLowerCase());
+        setSelectedMenu(menu);
     }
-  }, [restName, res]);
+}, [restName, res, selectedMenu]);
 
   useEffect(() => {
     if (restName && res) {
-      fetchMenu();
+        fetchMenu();
     }
-  }, [restName, res, fetchMenu]);
+}, [restName, fetchMenu]);
   
   return (
     <div>

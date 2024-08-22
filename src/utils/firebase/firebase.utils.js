@@ -89,24 +89,21 @@ export const createUserDocumentFromAuth = async (
 
     await batch.commit();
 };
-export const getRestaurantsInfo = async (username) => {
+export const getRestaurantsInfo = async (username) => { 
   try {
     const docRef = doc(db, 'restaurants', username);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const data = docSnap.data();
-      const info = {
-        phone: data.phone,
-        location: data.location,
-      }
-      return info;
+      const { phone, location } = docSnap.data();
+      return { phone, location };
     } else {
       console.log('No such document!');
-      return ;
+      return null;
     }
   } catch (error) {
     console.error('Error getting document:', error);
+    return null;
   }
 };
 

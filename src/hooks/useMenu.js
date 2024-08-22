@@ -42,46 +42,51 @@ const useMenu = (initialMenu, id) => {
 
   const handleAddItemSubmit = async (e) => {
     e.preventDefault();
-  
+
     let imageUrl = '';
     if (newItem.imageFile) {
-      try {
-        imageUrl = await uploadImageToImgbb(newItem.imageFile);
-        if (!imageUrl) {
-          console.error('Image upload failed');
-          return;
+        try {
+            imageUrl = await uploadImageToImgbb(newItem.imageFile);
+            if (!imageUrl) {
+                console.error('Image upload failed');
+                return;
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            return;
         }
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        return;
-      }
     }
-  
+
     const { imageFile, ...newItemWithoutFile } = newItem;
-  
+
     const newItemWithId = {
-      ...newItemWithoutFile,
-      id: new Date().getTime().toString(),
-      imageUrl: imageUrl, 
+        ...newItemWithoutFile,
+        id: new Date().getTime().toString(),
+        imageUrl: imageUrl, 
     };
-  
+
     try {
-      console.log('Adding item to category:', newItemWithId);
-      await addItemToCategory(id, editingCategory, newItemWithId);
-      
-  
-      setMenu(prevMenu => prevMenu.map(category =>
-        category.category === editingCategory
-          ? { ...category, items: [...category.items, newItemWithId] }
-          : category
-      ));
-  
-      setShowAddForm(false);
-      setNewItem({ name: '', price: '', imageFile: null });
+        setMenu(prevMenu => prevMenu.map(category =>
+            category.category === editingCategory
+                ? { ...category, items: [...category.items, newItemWithId] }
+                : category
+        ));
+
+        await addItemToCategory(id, editingCategory, newItemWithId);
+
+        setShowAddForm(false);
+        setNewItem({ name: '', price: '', imageFile: null });
     } catch (error) {
-      console.error('Error adding item:', error);
+        console.error('Error adding item:', error);
+
+        setMenu(prevMenu => prevMenu.map(category =>
+            category.category === editingCategory
+                ? { ...category, items: category.items.filter(item => item.id !== newItemWithId.id) }
+                : category
+        ));
     }
-  };
+};
+
   
   
 
@@ -122,55 +127,64 @@ const useMenu = (initialMenu, id) => {
 
   const handleDeleteItem = (id, categoryIndex, itemIndex) => {
     confirmAlert({
-      title: 'Confirm to delete',
-      message: 'Are you sure you want to delete this item?',
-      buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => {
-            try {
-              await deleteItem(id, categoryIndex, itemIndex);
-              setMenu(prevMenu => prevMenu.map((category, cIndex) =>
-                cIndex === categoryIndex
-                  ? { ...category, items: category.items.filter((_, iIndex) => iIndex !== itemIndex) }
-                  : category
-              ));
-            } catch (error) {
-              console.error('Error deleting item:', error);
-            }
-          }
-        },
-        {
-          label: 'No',
-          onClick: () => {}
-        }
-      ]
-    });
-  };
+        title: 'Confirm to delete',
+        message: 'Are you sure you want to delete this item?',
+        buttons: [
+            {
+                label: 'Yes',
+                onClick: async () => {
+                    try {
+                        setMenu(prevMenu => prevMenu.map((category, cIndex) =>
+                            cIndex === categoryIndex
+                                ? { ...category, items: category.items.filter((_, iIndex) => iIndex !== itemIndex) }
+                                : category
+                        ));
 
-  const handleDeleteCategory = (categoryIndex) => {
-    confirmAlert({
+                        await deleteItem(id, categoryIndex, itemIndex);
+                    } catch (error) {
+                        console.error('Error deleting item:', error);
+                        setMenu(prevMenu => prevMenu.map((category, cIndex) =>
+                            cIndex === categoryIndex
+                                ? { ...category, items: [...category.items.slice(0, itemIndex), { ...category.items[itemIndex] }] }
+                                : category
+                        ));
+                    }
+                }
+            },
+            {
+                label: 'No',
+                onClick: () => {}
+            }
+        ]
+    });
+};
+
+
+const handleDeleteCategory = (categoryIndex) => {
+  confirmAlert({
       title: 'Confirm to delete',
       message: 'Are you sure you want to delete this entire category? This action cannot be undone.',
       buttons: [
-        {
-          label: 'Yes',
-          onClick: async () => {
-            try {
-              const updatedMenu = await deleteCategory(id,categoryIndex);
-              setMenu(updatedMenu);
-            } catch (error) {
-              console.error('Error deleting category:', error);
-            }
+          {
+              label: 'Yes',
+              onClick: async () => {
+                  try {
+                      setMenu(prevMenu => prevMenu.filter((_, index) => index !== categoryIndex));
+                    
+                      await deleteCategory(id, categoryIndex);
+                  } catch (error) {
+                      console.error('Error deleting category:', error);
+                  }
+              }
+          },
+          {
+              label: 'No',
+              onClick: () => {}
           }
-        },
-        {
-          label: 'No',
-          onClick: () => {}
-        }
       ]
-    });
-  };
+  });
+};
+
 
   const handleClickCategory = () => {
     setShowCategoryForm(!showCategoryForm);
