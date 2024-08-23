@@ -53,6 +53,11 @@ const Home = () => {
         <HeroContent>
           <h1>Professional Menus Customized for Your Restaurant</h1>
           <p>We design your menu, and you have full control to update it anytime.</p>
+          bermadacafe@gmail.com
+          <br/>
+          bermadacafe123
+          <br/>
+          for admin login
         </HeroContent>
       </HeroSection>
 
