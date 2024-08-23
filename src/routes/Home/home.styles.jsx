@@ -37,10 +37,6 @@ export const HeroSection = styled.section`
   @media (max-width: 768px) {
     height: 300px;
   }
-
-  @media (max-width: 480px) {
-    height: 250px;
-  }
 `;
 
 export const HeroContent = styled.div`
