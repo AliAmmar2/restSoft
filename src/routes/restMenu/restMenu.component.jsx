@@ -26,7 +26,7 @@ const RestMenu = ({ isAdmin }) => {
     if (restName && res) {
         fetchMenu();
     }
-}, [restName, fetchMenu]);
+}, [restName, fetchMenu,res]);
   
   return (
     <div>

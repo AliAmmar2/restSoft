@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth,signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth"
-import {  collection, deleteDoc, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc, writeBatch } from 'firebase/firestore'
+import {  collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc, writeBatch,runTransaction } from 'firebase/firestore'
 
 
 const firebaseConfig = {
@@ -135,26 +135,35 @@ export const getAllRestaurants = async () => {
   };
 
   export const deleteItem = async (restaurantId, categoryIndex, itemIndex) => {
+    if (!restaurantId || !Number.isInteger(categoryIndex) || !Number.isInteger(itemIndex) || categoryIndex < 0 || itemIndex < 0) {
+      throw new Error('Invalid input parameters');
+    }
+  
     try {
       const restaurantRef = doc(db, 'restaurants', restaurantId);
-      
-      // Get the current document
-      const docSnap = await getDoc(restaurantRef);
-      if (!docSnap.exists()) {
-        throw new Error('Restaurant document not found');
-      }
   
-      const restaurantData = docSnap.data();
-      const updatedMenu = [...restaurantData.menu];
+      // Perform the transaction
+      await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(restaurantRef);
+        if (!docSnap.exists()) {
+          throw new Error(`Failed to delete item: Restaurant document with ID ${restaurantId} not found`);
+        }
   
-      // Remove the item from the specified category
-      updatedMenu[categoryIndex].items.splice(itemIndex, 1);
+        const restaurantData = docSnap.data();
+        const updatedMenu = [...restaurantData.menu];
   
-      // Update the document in Firestore
-      await updateDoc(restaurantRef, { menu: updatedMenu });
+        if (categoryIndex >= updatedMenu.length || itemIndex >= updatedMenu[categoryIndex].items.length) {
+          throw new Error('Invalid categoryIndex or itemIndex');
+        }
+  
+        updatedMenu[categoryIndex].items.splice(itemIndex, 1);
+  
+        // Update the document with the new menu
+        transaction.update(restaurantRef, { menu: updatedMenu });
+      });
   
       console.log('Item deleted successfully');
-      return updatedMenu; // Return the updated menu for local state update
+      return; // No need to return updatedMenu, as it's not necessary outside the transaction
     } catch (error) {
       console.error('Error deleting item:', error);
       throw error;
@@ -165,7 +174,6 @@ export const getAllRestaurants = async () => {
     try {
       const restaurantRef = doc(db, 'restaurants', restaurantId);
       
-      // Get the current document
       const docSnap = await getDoc(restaurantRef);
       if (!docSnap.exists()) {
         throw new Error('Restaurant document not found');
@@ -174,14 +182,12 @@ export const getAllRestaurants = async () => {
       const restaurantData = docSnap.data();
       const updatedMenu = [...restaurantData.menu];
   
-      // Remove the category
       updatedMenu.splice(categoryIndex, 1);
   
-      // Update the document in Firestore
       await updateDoc(restaurantRef, { menu: updatedMenu });
   
       console.log('Category deleted successfully');
-      return updatedMenu; // Return the updated menu for local state update
+      return updatedMenu; 
     } catch (error) {
       console.error('Error deleting category:', error);
       throw error;
@@ -218,21 +224,20 @@ export const getAllRestaurants = async () => {
   export const addCategory = async (restaurantId, newCategory) => {
     try {
       const restaurantRef = doc(db, 'restaurants', restaurantId);
-      
-      // Get the current document
-      const docSnap = await getDoc(restaurantRef);
-      if (!docSnap.exists()) {
-        throw new Error('Restaurant document not found');
-      }
   
-      const restaurantData = docSnap.data();
-      const updatedMenu = [...restaurantData.menu, { category: newCategory, items: [] }];
+      await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(restaurantRef);
+        if (!docSnap.exists()) {
+          throw new Error('Restaurant document not found');
+        }
   
-      // Update the document in Firestore
-      await updateDoc(restaurantRef, { menu: updatedMenu });
+        const restaurantData = docSnap.data();
+        const updatedMenu = [...restaurantData.menu, { category: newCategory, items: [] }];
+  
+        transaction.update(restaurantRef, { menu: updatedMenu });
+      });
   
       console.log('Category added successfully');
-      return updatedMenu; 
     } catch (error) {
       console.error('Error adding category:', error);
       throw error;
@@ -240,41 +245,44 @@ export const getAllRestaurants = async () => {
   };
 
   export const updateItem = async (id, categoryIndex, editedItems, currentMenu) => {
-    console.log('firebase access update')
     if (Object.keys(editedItems).length === 0) {
       return { success: true, noChanges: true };
     }
   
     try {
       const restaurantRef = doc(db, "restaurants", id);
-      const docSnap = await getDoc(restaurantRef);
-      
-      if (!docSnap.exists()) {
-        throw new Error("Restaurant document does not exist");
-      }
   
-      const restaurantData = docSnap.data();
-      const updatedMenu = [...(restaurantData.menu || [])];
-  
-      if (!updatedMenu[categoryIndex]) {
-        updatedMenu[categoryIndex] = { items: [] };
-      }
-  
-      updatedMenu[categoryIndex].items = currentMenu[categoryIndex].items.map((item, index) => {
-        if (editedItems[index]) {
-          return { ...item, ...editedItems[index] };
+      // Use a transaction to ensure atomicity
+      const result = await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(restaurantRef);
+        if (!docSnap.exists()) {
+          throw new Error("Restaurant document does not exist");
         }
-        return item;
+  
+        const restaurantData = docSnap.data();
+        const updatedMenu = [...(restaurantData.menu || [])];
+  
+        if (!updatedMenu[categoryIndex]) {
+          updatedMenu[categoryIndex] = { items: [] };
+        }
+  
+        // Update items in the specified category
+        updatedMenu[categoryIndex].items = currentMenu[categoryIndex].items.map((item, index) => {
+          if (editedItems[index]) {
+            return { ...item, ...editedItems[index] };
+          }
+          return item;
+        });
+  
+        // Update the document in Firestore
+        transaction.update(restaurantRef, { menu: updatedMenu });
+  
+        // Return the updated menu from the transaction
+        return updatedMenu;
       });
   
-      await updateDoc(restaurantRef, { menu: updatedMenu });
-      
       console.log(`Updated items in category ${categoryIndex}`);
-      return { 
-        success: true, 
-        noChanges: false,
-        updatedMenu: updatedMenu
-      };
+      return { success: true, noChanges: false, updatedMenu: result };
     } catch (error) {
       console.error("Error updating items: ", error);
       return { success: false, message: "Failed to update menu", error };
