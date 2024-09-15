@@ -113,9 +113,11 @@ export const getRestaurantsInfo = async (username) => {
   }
 };
 
+let menuCache = {};
+
 export const getRestaurantsByUsername = async (username) => {
-  if (menuCache[username]) {
-    return menuCache[username];
+  if (menuCache[username] && Date.now() - menuCache[username].timestamp < 300000) {
+    return menuCache[username].data;
   }
 
   try {
@@ -123,9 +125,15 @@ export const getRestaurantsByUsername = async (username) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const { menu } = docSnap.data();
-      menuCache[username] = menu;
-      return menu;
+      const data = docSnap.data();
+      const restaurantData = {
+        menu: data.menu,
+        name: data.name,
+        location: data.location,
+        id: username
+      };
+      menuCache[username] = { data: restaurantData, timestamp: Date.now() };
+      return restaurantData;
     } else {
       console.log('No such document!');
       return null;
@@ -136,16 +144,30 @@ export const getRestaurantsByUsername = async (username) => {
   }
 };
 
+let allRestaurantsCache = null;
+
 export const getAllRestaurants = async () => {
-    try {
-      const collectionRef = collection(db, 'restaurants');
-      const querySnapshot = await getDocs(collectionRef);
-      const restaurants = querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name, url: doc.data().IconUrl, location: doc.data().location}));
-      return restaurants;
-    } catch (error) {
-      console.error('Error getting documents:', error);
+    if (allRestaurantsCache && Date.now() - allRestaurantsCache.timestamp < 300000) {
+        return allRestaurantsCache.data;
     }
-  };
+
+    try {
+        const collectionRef = collection(db, 'restaurants');
+        const querySnapshot = await getDocs(collectionRef);
+        const restaurants = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            name: doc.data().name,
+            url: doc.data().IconUrl,
+            location: doc.data().location,
+            menu: doc.data().menu
+        }));
+        allRestaurantsCache = { data: restaurants, timestamp: Date.now() };
+        return restaurants;
+    } catch (error) {
+        console.error('Error getting documents:', error);
+        return [];
+    }
+};
 
   export const deleteItem = async (restaurantId, categoryIndex, itemIndex) => {
     if (!restaurantId || !Number.isInteger(categoryIndex) || !Number.isInteger(itemIndex) || categoryIndex < 0 || itemIndex < 0) {

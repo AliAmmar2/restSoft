@@ -34,7 +34,6 @@ const MenuItems = ({ name, id, initialMenu, location, isAdmin }) => {
   const admin = currentUser && isAdmin && restName === id;
 
   useEffect(() => {
-    // Update Redux store when menu changes
     dispatch(setMenu({ restId: id, menu }));
   }, [menu, id, dispatch]);
 
