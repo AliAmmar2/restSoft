@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth,signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth"
+import { getAuth,signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth"
 import {  collection, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc, writeBatch,runTransaction } from 'firebase/firestore'
 
 
@@ -59,6 +59,12 @@ export const createUserDocumentFromAuth = async (
   };
   
   export const signOutUser = async () => await signOut(auth);
+
+  export const resetPassword = async(email) => {
+    if(!email) return;
+
+    return await sendPasswordResetEmail(auth,email)
+  }
   
   export const onAuthStateChangedListener = (callback) =>
     onAuthStateChanged(auth, callback);
@@ -288,3 +294,5 @@ export const getAllRestaurants = async () => {
       return { success: false, message: "Failed to update menu", error };
     }
   };
+
+  

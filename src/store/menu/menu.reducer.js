@@ -12,8 +12,11 @@ const restaurantSlice = createSlice({
         setRestaurants: (state, action) => {
             state.restaurants = action.payload;
         },
+        setSelectedRestaurant: (state, action) => {
+            state.selectedRestaurant = action.payload;
+        },
     },
 });
 
-export const { setRestaurants } = restaurantSlice.actions;
+export const { setRestaurants, setSelectedRestaurant } = restaurantSlice.actions;
 export const restaurantReducer =  restaurantSlice.reducer;

@@ -7,6 +7,7 @@ const DeleteButton = ({admin, handleDeleteItem, id, categoryIndex, itemIndex}) =
               className="delete-item-button"
               onClick={() => handleDeleteItem(id, categoryIndex,itemIndex)}
             >
+              
               Delete
             </button>
   )
