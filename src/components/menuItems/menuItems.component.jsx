@@ -1,4 +1,6 @@
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setMenu } from '../../store/menu/menu.reducer';
 import './menuItems.styles.scss';
 import { selectCurrentUser } from '../../store/user/user.selector';
 import { useEffect, useState } from 'react';
@@ -12,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import CheckoutItem from '../checkoutItem/checkoutItem.component';
 import Checkout from '../../routes/checkout/checkout.component';
 
-const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
+const MenuItems = ({ name, id, initialMenu, location, isAdmin }) => {
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const [restName, setRestName] = useState(null);
   const { menu, handleAddItem, handleNewItemChange, handleAddItemSubmit, handleEdit, handleSave, handleItemChange, handleDeleteItem, handleDeleteCategory, handleClickCategory, handleFieldChange, handleAddCategory, showAddForm, editingCategory, editedItems, newItem, showCategoryForm, categoryName } = useMenu(initialMenu, id);
@@ -29,6 +32,11 @@ const MenuItems = ({ name, id, initialMenu,location, isAdmin }) => {
   }, [currentUser]);
 
   const admin = currentUser && isAdmin && restName === id;
+
+  useEffect(() => {
+    // Update Redux store when menu changes
+    dispatch(setMenu({ restId: id, menu }));
+  }, [menu, id, dispatch]);
 
   return (
     <>

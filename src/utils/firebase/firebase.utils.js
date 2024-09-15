@@ -114,20 +114,27 @@ export const getRestaurantsInfo = async (username) => {
 };
 
 export const getRestaurantsByUsername = async (username) => {
-    try {
-      const docRef = doc(db, 'restaurants', username);
-      const docSnap = await getDoc(docRef);
-  
-      if (docSnap.exists()) {
-        return docSnap.data().menu;
-      } else {
-        console.log('No such document!');
-        return ;
-      }
-    } catch (error) {
-      console.error('Error getting document:', error);
+  if (menuCache[username]) {
+    return menuCache[username];
+  }
+
+  try {
+    const docRef = doc(db, 'restaurants', username);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const { menu } = docSnap.data();
+      menuCache[username] = menu;
+      return menu;
+    } else {
+      console.log('No such document!');
+      return null;
     }
-  };
+  } catch (error) {
+    console.error('Error getting document:', error);
+    return null;
+  }
+};
 
 export const getAllRestaurants = async () => {
     try {

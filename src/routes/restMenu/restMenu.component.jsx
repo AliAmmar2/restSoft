@@ -2,37 +2,43 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { getRestaurantsByUsername } from '../../utils/firebase/firebase.utils';
 import MenuItems from '../../components/menuItems/menuItems.component';
-import { useSelector } from 'react-redux';
-import { selectRestaurants } from '../../store/menu/menu.selector';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectRestaurants, selectMenuByRestId } from '../../store/menu/menu.selector';
+import { setMenu } from '../../store/menu/menu.reducer';
 import Admin from '../Admin/admin.component';
 import Spinner from '../../components/spinner/spinner.component';
 import RestFooter from '../../components/restFooter/restFooter.component';
 
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 const RestMenu = ({ isAdmin }) => {
   const { restName } = useParams();
-  const [selectedMenu, setSelectedMenu] = useState(null);
+  const dispatch = useDispatch();
   const restaurants = useSelector(selectRestaurants);
+  const selectedMenu = useSelector(state => selectMenuByRestId(state, restName));
   const res = useMemo(() => restaurants.find(r => r.id === restName), [restaurants, restName]);
 
+  const cachedMenu = useSelector(state => selectMenuByRestId(state, restName));
+  const isCacheValid = cachedMenu && (Date.now() - cachedMenu.timestamp < CACHE_DURATION);
 
   const fetchMenu = useCallback(async () => {
-    if (res && !selectedMenu) { 
-        const menu = await getRestaurantsByUsername(restName.toLowerCase());
-        setSelectedMenu(menu);
+    if (res && (!cachedMenu || !isCacheValid)) { 
+      const menu = await getRestaurantsByUsername(restName.toLowerCase());
+      dispatch(setMenu({ restId: restName, menu }));
     }
-}, [restName, res, selectedMenu]);
+  }, [restName, res, cachedMenu, isCacheValid, dispatch]);
 
   useEffect(() => {
-    if (restName && res) {
-        fetchMenu();
+    if (restName && res && (!cachedMenu || !isCacheValid)) {
+      fetchMenu();
     }
-}, [restName, fetchMenu,res]);
+  }, [restName, fetchMenu, res, cachedMenu, isCacheValid]);
   
   return (
     <div>
-       {selectedMenu ? (
+       {cachedMenu ? (
         <MenuItems
-          initialMenu={selectedMenu} 
+          initialMenu={cachedMenu.data} 
           name={res.name} 
           id={res.id} 
           location={res.location}
